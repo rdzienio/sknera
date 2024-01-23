@@ -32,51 +32,24 @@ public class TestController {
         var mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http
-                .exceptionHandling((config)-> config.accessDeniedPage("/url_error403"));
-        http.
-                csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()).disable());
-        http.
-                headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()));
-
-
-        http
+                .exceptionHandling((config) -> config.accessDeniedPage("/url_error403"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()).disable())
+                .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(
-                                mvcMatcherBuilder.pattern("/"),
-                                mvcMatcherBuilder.pattern("/*"),
-                                //mvcMatcherBuilder.pattern("/accessDenied"),
-                                mvcMatcherBuilder.pattern("/produkty")
-                        ).permitAll()
-                        .requestMatchers(
-                                //mvcMatcherBuilder.pattern("/produkty/"),
-                                mvcMatcherBuilder.pattern("/produkty/show**")
-                        ).hasRole("USER")
-                        .requestMatchers(
-                                mvcMatcherBuilder.pattern("/admin/**"),
+                        .requestMatchers(mvcMatcherBuilder.pattern("/"),
+                                mvcMatcherBuilder.pattern("/produkty")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/test**")).hasAnyRole("USER", "SELLER")
+                        .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"),
                                 mvcMatcherBuilder.pattern("/produkty/edit**"),
                                 mvcMatcherBuilder.pattern("/produkty/add**"),
-                                mvcMatcherBuilder.pattern("/produkty/saveProduct")
-                        ).hasRole("ADMIN")
-                        .requestMatchers(
-                                mvcMatcherBuilder.pattern("/db/**"),
-                                mvcMatcherBuilder.pattern("/admin/**"),
-                                mvcMatcherBuilder.pattern("/produkty/show**"),
-                                mvcMatcherBuilder.pattern("/produkty/edit**"),
-                                mvcMatcherBuilder.pattern("/produkty/add**"),
-                                mvcMatcherBuilder.pattern("/produkty/saveProduct")
-                        ).access(new WebExpressionAuthorizationManager("hasRole('ADMIN') and hasRole('USER')"))
+                                mvcMatcherBuilder.pattern("/produkty/saveProduct")).hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .formLogin((form) -> form.loginPage("/login").permitAll())
+                .logout((logout) -> logout.permitAll());
 
-                        .anyRequest()
-                        .authenticated()//każde żądanie ma być uwierzytelnione
-                );
-        http. //uwierzytelnienie poprzez formularz logowania
-                formLogin((form) -> form
-                .loginPage("/login")//formularz dostępny jest pod URL
-                .permitAll()
-        );
-        http.logout((logout) -> logout.permitAll());
         return http.build();
     }
+
 
     @GetMapping("/test")
     public String showRegistrationForm() {

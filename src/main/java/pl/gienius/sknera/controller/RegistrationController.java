@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.gienius.sknera.entity.User;
 import pl.gienius.sknera.repository.UserRepository;
 
@@ -25,12 +26,18 @@ public class RegistrationController {
         return "registerUser";
     }
     @PostMapping("/register")
-    public String registerUserAccount(@ModelAttribute("user") User user) {
-        user.setRole("USER");
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+    public String registerUserAccount(@ModelAttribute("user") User user,
+                                      @RequestParam(required = false) boolean isSeller) {
+        if (isSeller) {
+            user.setRole("SELLER");
+        } else {
+            user.setRole("USER");
+        }
+        String encodedPassword = passwordEncoder.encode(user.getPassword()); //hash hasła
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return "redirect:/login";
     }
+
 }
 
