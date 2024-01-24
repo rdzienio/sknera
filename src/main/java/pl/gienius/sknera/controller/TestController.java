@@ -27,28 +27,7 @@ public class TestController {
         mav.addObject("wersjaJRE", System.getProperty("java.version"));
         return mav;
     }
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
-        var mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
-        http
-                .exceptionHandling((config) -> config.accessDeniedPage("/url_error403"))
-                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()).disable())
-                .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(mvcMatcherBuilder.pattern("/"),
-                                mvcMatcherBuilder.pattern("/produkty")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/test**")).hasAnyRole("USER", "SELLER")
-                        .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"),
-                                mvcMatcherBuilder.pattern("/produkty/edit**"),
-                                mvcMatcherBuilder.pattern("/produkty/add**"),
-                                mvcMatcherBuilder.pattern("/produkty/saveProduct")).hasRole("ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin((form) -> form.loginPage("/login").permitAll())
-                .logout((logout) -> logout.permitAll());
-
-        return http.build();
-    }
 
 
     @GetMapping("/test")

@@ -11,6 +11,7 @@ public class WebMvcConfigurerImpl implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/signup").setViewName("registerUser");
         registry.addViewController("/url_error403").setViewName("accessDenied");
     }
     //…Tutaj można też zarejestrować globalne formatery

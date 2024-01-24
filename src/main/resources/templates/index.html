@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
 </head>
 <body>
 <header><a href="/login">Logowanie</a></div> <a href="/register">Rejestracja</a></div></header>
+<div sec:authorize=" isAuthenticated()">
+    Hello, <span sec:authentication="name"/>! <span><a href="#" class="nav-link" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
+<form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
+
+    </p></span>
+</div>
 <H1>Informacje o serwerze</H1>
 <ul>
     <li>[[${architektura}]]</li>
