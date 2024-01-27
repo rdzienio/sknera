@@ -1,6 +1,7 @@
 package pl.gienius.sknera.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,13 +13,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(min=2, max=50)
     private String username;
+    @NotBlank
     private String password;
+    @Column(nullable = false, unique = true)
+    private String email;
     @ManyToMany
     @JoinTable(name = "users_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<Role>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     public User() {
     }
@@ -32,7 +42,6 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
-        //this.roles = new HashSet<Role>();
     }
 
     public User(Long id, String username, String password, Set<Role> roles) {
@@ -40,6 +49,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = roles;
+    }
+
+    public User(Long id, String username, String password, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public Long getId() {
@@ -76,6 +92,22 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

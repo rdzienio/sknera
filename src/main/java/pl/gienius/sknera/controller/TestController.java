@@ -19,14 +19,14 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Controller
 public class TestController {
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public ModelAndView serwerInfo() throws IOException {
         var mav = new ModelAndView( "index", "architektura", System.getProperty("os.arch"));
         mav.addObject("nazwa", System.getProperty("os.name"));
         mav.addObject("producentJRE", System.getProperty("java.vendor"));
         mav.addObject("wersjaJRE", System.getProperty("java.version"));
         return mav;
-    }
+    }*/
 
 
 

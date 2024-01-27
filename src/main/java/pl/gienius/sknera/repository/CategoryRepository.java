@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository;
 import pl.gienius.sknera.entity.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    public Category getCategoryById(Long categoryId);
 }

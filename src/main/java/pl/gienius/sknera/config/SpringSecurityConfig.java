@@ -33,17 +33,20 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
                                 mvcMatcherBuilder.pattern("/"),
-                                mvcMatcherBuilder.pattern("/resources/static"),
+                                mvcMatcherBuilder.pattern("/all"),
+                                mvcMatcherBuilder.pattern("/category/**"),
                                 mvcMatcherBuilder.pattern("/signup"),
                                 mvcMatcherBuilder.pattern("/register"),
-                                mvcMatcherBuilder.pattern("/flightList"),
-                                mvcMatcherBuilder.pattern("/index**"),
-                                mvcMatcherBuilder.pattern("/resources/**")
+                                mvcMatcherBuilder.pattern("/index**")
 
                         ).permitAll()
                         .requestMatchers(
-                                mvcMatcherBuilder.pattern("/admin/**"),
-                                mvcMatcherBuilder.pattern("/test")
+                                mvcMatcherBuilder.pattern("/test"),
+                                mvcMatcherBuilder.pattern("/panel"),
+                                mvcMatcherBuilder.pattern("/panel/**")
+                        ).hasRole("USER")
+                        .requestMatchers(
+                                mvcMatcherBuilder.pattern("/admin/**")
                         ).hasRole("ADMIN")
                         .requestMatchers(
                                 mvcMatcherBuilder.pattern("/db/**")

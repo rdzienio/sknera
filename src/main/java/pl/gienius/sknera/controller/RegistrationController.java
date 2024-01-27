@@ -28,6 +28,9 @@ public class RegistrationController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleController roleController;
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         log.info("GET Registration");
@@ -38,19 +41,22 @@ public class RegistrationController {
     public String registerUserAccount(@ModelAttribute("user") User user,
                                       @RequestParam(required = false) boolean isSeller) {
         log.info("POST Registration: " + user.getUsername());
-        /*if (isSeller) {
-            // Pobierz rolę SELLER z bazy danych i przypisz ją do użytkownika
-            Role sellerRole = roleRepository.findByName("SELLER");
-            user.addRole(sellerRole);
-        } else {
-            // Pobierz rolę USER z bazy danych i przypisz ją do użytkownika
-            Role userRole = roleRepository.findByName("USER");
-            user.addRole(userRole);
-        }*/
+        log.info(getUserRole().getType().toString());
+        user.addRole(getUserRole());
         String encodedPassword = passwordEncoder.encode(user.getPassword()); //hash hasła
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return "redirect:/login";
+    }
+
+    public Role getUserRole(){
+        for(Role userRole:roleRepository.findAll()){
+            log.info("Role w bazie:" + userRole.getType());
+            if(userRole.getType().toString().equals("ROLE_USER")){
+                return userRole;
+            }
+        }
+        return new Role();
     }
 
 }

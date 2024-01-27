@@ -41,4 +41,6 @@ public class Category {
     public void setProdukty(Set<Product> produkty) {
         this.produkty = produkty;
     }
+
+    //public void addProduct(Product product) {this.produkty.add(product);}
 }

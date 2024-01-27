@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <title>Zaloguj</title>
+    <meta charset="UTF-8" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="text"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
 </head>
-<body>
-<h1>Zaloguj</h1>
-<div th:if="${param.error}">
-    Zła nazwa lub hasło uzytkownika!
-</div>
-<div th:if="${param.logout}">
-    Zostałeś wylogowany!
-</div>
+<body class="d-flex align-items-center py-4 bg-body-tertiary" data-new-gr-c-s-check-loaded="14.1152.0" data-gr-ext-installed>
+<main class="form-signin w-100 m-auto">
 <form th:action="@{/login}" method="post">
-    <div>
-        <input type="text" name="username" placeholder="Username"/>
+    <h1 class="h3 mb-3 fw-normal">Zaloguj</h1>
+    <div th:if="${param.error}">
+        Zła nazwa lub hasło uzytkownika!
     </div>
-    <div>
-        <input type="password" name="password" placeholder="Password"/>
+    <div th:if="${param.logout}">
+        Zostałeś wylogowany!
     </div>
-    <input type="submit" value="Zaloguj"/>
+    <div class="form-floating">
+        <input class="form-control" id="username" type="text" name="username" placeholder="Username"/>
+    </div>
+    <div class="form-floating">
+        <input class="form-control" id="password" type="password" name="password" placeholder="Password"/>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit">Zaloguj</button>
 </form>
 <div><a href="/register">Rejestracja</a></div></div>
+</main>
 </body>
 </html>
