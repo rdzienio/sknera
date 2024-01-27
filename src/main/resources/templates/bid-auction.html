@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="pl">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Złóż ofertę | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+</head>
+<body>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">Sknera - najlepsze ceny w
+                Internecie</a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a href="/" class="nav-link px-2 link-secondary">Home</a>
+            </li>
+            <li>
+                <a href="/all" class="nav-link px-2">Aukcje</a>
+            </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <div class="row nav-link">
+                <div sec:authorize=" isAuthenticated()">
+                    Hello, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-link">Wyloguj się</button>
+                    </form>
+                </div>
+                <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
+                <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Kategorie</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="/all">Wszystkie</a>
+                </li>
+                <!-- Pętla po kategoriach -->
+                <li class="list-group-item" th:each="kategoria : ${kategorie}">
+                    <a th:href="@{'/category/' + ${kategoria.id}}" th:text="${kategoria.nazwa}">Kategoria</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <h2>Składanie Oferty na Aukcję</h2>
+
+            <div class="card">
+                <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${auction.image})}"
+                     alt="Zdjęcie produktu">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${auction.title}">Tytuł Aukcji</h5>
+                    <p class="card-text" th:text="${auction.description}">Opis Aukcji</p>
+                    <p class="card-text">Aktualna najwyższa oferta: <span th:text="${auction.actualPrice}">0</span> zł</p>
+
+                    <form th:action="@{/place-bid/{auctionId}(auctionId=${auction.id})}" method="post">
+                        <div class="form-group">
+                            <label for="bidAmount">Kwota oferty:</label>
+                            <input type="number" id="bidAmount" name="bidAmount" class="form-control"
+                                   th:min="${auction.actualPrice + 1}" placeholder="Wpisz swoją ofertę" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Złóż Ofertę</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ®
+            Robert Dzienio / Powered by Bootstrap
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

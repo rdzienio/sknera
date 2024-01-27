@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
@@ -37,7 +38,34 @@
 </head>
 <body>
 
-<body class="d-flex align-items-center py-4 bg-body-tertiary" data-new-gr-c-s-check-loaded="14.1152.0" data-gr-ext-installed>
+<body>
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">Sknera - najlepsze ceny w Internecie</a>
+    </div>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li>
+            <a href="/" class="nav-link px-2 link-secondary">Home</a>
+        </li>
+        <li>
+            <a href="/all" class="nav-link px-2">Aukcje</a>
+        </li>
+    </ul>
+
+    <div class="col-md-3 text-end">
+        <div class="row nav-link">
+            <div sec:authorize=" isAuthenticated()">
+                Hello, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
+                <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
+                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
+            </span>
+            </div>
+            <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
+            <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
+        </div>
+    </div>
+</header>
 <main class="form-signin w-100 m-auto">
 
     <form th:action="@{/register}" method="post">

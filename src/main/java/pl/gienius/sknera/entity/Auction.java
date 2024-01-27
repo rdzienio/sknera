@@ -2,6 +2,7 @@ package pl.gienius.sknera.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -27,17 +28,18 @@ public class Auction {
 
     @Column(nullable = false)
     private Double startingPrice;
+
+    private Double actualPrice;
     private LocalDateTime startDate;
 
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @Lob
+
     private String description;
     @NotBlank
     private String title;
 
-    @Lob
     private String image;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -48,6 +50,10 @@ public class Auction {
         if (startDate == null) { // Ustaw startDate tylko jeśli nie została już ustawiona
             startDate = LocalDateTime.now(); // Ustaw aktualną datę i czas jako datę rozpoczęcia
         }
+        if(image == null) {
+            image = "doge.jpg";
+        }
+        actualPrice = startingPrice;
     }
 
     public Long getId() {
@@ -136,6 +142,14 @@ public class Auction {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Double getActualPrice() {
+        return actualPrice;
+    }
+
+    public void setActualPrice(Double actualPrice) {
+        this.actualPrice = actualPrice;
     }
 }
 

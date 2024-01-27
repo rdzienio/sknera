@@ -29,9 +29,10 @@
             <div class="row nav-link">
                 <div sec:authorize=" isAuthenticated()">
                     Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
-                    <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
-                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
-            </span>
+                    <span>
+                        <form th:action="@{/logout}" id="logoutForm" th:method="post" style="display: none;"></form>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Wyloguj się</a>
+                    </span>
                 </div>
                 <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
                 <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
@@ -52,25 +53,29 @@
                 <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
             </ul>
         </div>
+        <div th:if="${address == null}">Pusto!</div>
 
-        <div class="col-md-9">
-            <h2>Panel klienta <span sec:authentication="name"></span></h2>
-            <div th:if="${aukcje.isEmpty()}">
-                <p>Nie znaleziono żadnych aukcji.</p>
-            </div>
-            <div class="row" th:unless="${aukcje.isEmpty()}">
-                <div class="col-md-4 mb-3" th:each="aukcja, iterStat : ${aukcje}" th:if="${iterStat.count <= 10}">
-                    <div class="card">
-                        <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${aukcja.product.nazwa}">Nazwa Produktu</h5>
-                            <p class="card-text" th:text="${aukcja.description}">Opis...</p>
-                            <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
-                            <a href="#" class="btn btn-primary" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
-                        </div>
-                    </div>
+        <div class="col-md-9" th:unless="${address == null}">
+            <h2 th:text="${address != null ? 'Edytuj Adres' : 'Dodaj Adres'}">Edycja/Dodawanie Adresu</h2>
+            <form th:action="@{/update-address}" th:object="${address}" method="post">
+                <div class="form-group">
+                    <label for="street">Ulica:</label>
+                    <input type="text" id="street" th:field="*{street}" class="form-control" placeholder="Wpisz ulicę">
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="city">Miasto:</label>
+                    <input type="text" id="city" th:field="*{city}" class="form-control" placeholder="Wpisz miasto">
+                </div>
+                <div class="form-group">
+                    <label for="zip">Kod pocztowy:</label>
+                    <input type="text" id="zip" th:field="*{zip}" class="form-control" placeholder="Wpisz kod pocztowy">
+                </div>
+                <div class="form-group">
+                    <label for="country">Kraj:</label>
+                    <input type="text" id="country" th:field="*{country}" class="form-control" placeholder="Wpisz kraj">
+                </div>
+                <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+            </form>
         </div>
     </div>
 </div>

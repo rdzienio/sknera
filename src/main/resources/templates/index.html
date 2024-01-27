@@ -61,11 +61,12 @@
             <div class="row" th:unless="${aukcje.isEmpty()}">
                 <div class="col-md-4 mb-3" th:each="aukcja, iterStat : ${aukcje}" th:if="${iterStat.count <= 10}">
                     <div class="card">
-                        <img class="card-img-top" th:src="${aukcja.image}" alt="Zdjęcie produktu">
+                        <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${aukcja.product.name}">Nazwa Produktu</h5>
+                            <h5 class="card-title" th:text="${aukcja.product.nazwa}">Nazwa Produktu</h5>
                             <p class="card-text" th:text="${aukcja.description}">Opis...</p>
-                            <a href="#" class="btn btn-primary" th:href="@{/auction/details(id=${aukcja.id})}">Zobacz szczegóły</a>
+                            <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
+                            <a href="#" class="btn btn-primary" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
                         </div>
                     </div>
                 </div>

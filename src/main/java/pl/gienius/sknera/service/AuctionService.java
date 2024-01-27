@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.gienius.sknera.entity.Auction;
+import pl.gienius.sknera.entity.Bid;
 import pl.gienius.sknera.entity.User;
 import pl.gienius.sknera.repository.AuctionRepository;
 
@@ -28,6 +29,10 @@ public class AuctionService {
     public List<Auction> getActiveAuctions() {
         LocalDateTime now = LocalDateTime.now();
         return auctionRepository.findActiveAuctions(now);
+    }
+
+    public Auction getAuctionById(Long id) {
+        return auctionRepository.getAuctionById(id);
     }
 
     public void addAuction(Auction auction) {
@@ -61,5 +66,10 @@ public class AuctionService {
     public List<Auction> getActiveAuctionsForUser(User user) {
         LocalDateTime now = LocalDateTime.now();
         return auctionRepository.findActiveAuctionsByUser(user, now);
+    }
+    public void addBidToAuction(Auction auction, Bid bid){
+        auction.getBids().add(bid);
+        auction.setActualPrice(bid.getPrice());
+        auctionRepository.save(auction);
     }
 }

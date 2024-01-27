@@ -34,6 +34,8 @@ public class SpringSecurityConfig {
                         .requestMatchers(
                                 mvcMatcherBuilder.pattern("/"),
                                 mvcMatcherBuilder.pattern("/all"),
+                                mvcMatcherBuilder.pattern("/images/**"),
+                                mvcMatcherBuilder.pattern("/img/**"),
                                 mvcMatcherBuilder.pattern("/category/**"),
                                 mvcMatcherBuilder.pattern("/signup"),
                                 mvcMatcherBuilder.pattern("/register"),
@@ -43,6 +45,12 @@ public class SpringSecurityConfig {
                         .requestMatchers(
                                 mvcMatcherBuilder.pattern("/test"),
                                 mvcMatcherBuilder.pattern("/panel"),
+                                mvcMatcherBuilder.pattern("/edit-address"),
+                                mvcMatcherBuilder.pattern("/update-address"),
+                                mvcMatcherBuilder.pattern("/add-auction"),
+                                mvcMatcherBuilder.pattern("/save-auction"),
+                                mvcMatcherBuilder.pattern("/place-bid/**"),
+                                mvcMatcherBuilder.pattern("/auction-details/**"),
                                 mvcMatcherBuilder.pattern("/panel/**")
                         ).hasRole("USER")
                         .requestMatchers(
