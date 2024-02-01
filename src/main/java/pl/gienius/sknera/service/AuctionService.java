@@ -1,5 +1,6 @@
 package pl.gienius.sknera.service;
 
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -22,22 +23,26 @@ public class AuctionService {
         this.auctionRepository = auctionRepository;
     }
 
+    @Transactional
     public List<Auction> getAuctions() {
         return auctionRepository.findAll();
     }
 
+    @Transactional
     public List<Auction> getActiveAuctions() {
         LocalDateTime now = LocalDateTime.now();
         return auctionRepository.findActiveAuctions(now);
     }
 
+    @Transactional
     public Auction getAuctionById(Long id) {
         return auctionRepository.getAuctionById(id);
     }
 
+
     public void addAuction(Auction auction) {
         logger.info("Adding new auction " + auction.getTitle());
-        auctionRepository.save(auction);
+        auctionRepository.saveAndFlush(auction);
     }
 
     public Auction updateAuction(Auction auction) {
@@ -54,15 +59,18 @@ public class AuctionService {
         return toUpdate;
     }
 
+    @Transactional
     public List<Auction> getLatestAuctions() {
         return auctionRepository.findTop10ByOrderByEndDateDesc(PageRequest.of(0, 10));
     }
 
+    @Transactional
     public List<Auction> getCurrentAuctionsForCategory(Long categoryId) {
         LocalDateTime now = LocalDateTime.now();
         return auctionRepository.findCurrentAuctionsByCategoryId(categoryId, now);
     }
 
+    @Transactional
     public List<Auction> getActiveAuctionsForUser(User user) {
         LocalDateTime now = LocalDateTime.now();
         return auctionRepository.findActiveAuctionsByUser(user, now);

@@ -2,9 +2,11 @@ package pl.gienius.sknera.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Set;
 
 @Entity
@@ -41,6 +43,11 @@ public class Auction {
     private String title;
 
     private String image;
+   /* @Lob
+    //@Type(type = "org.hibernate.type.BinaryType")
+    //@Column(columnDefinition="BLOB", name = "content")
+    private byte[] fileContent;*/
+
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Bid> bids;
@@ -49,9 +56,6 @@ public class Auction {
     public void prePersist() {
         if (startDate == null) { // Ustaw startDate tylko jeśli nie została już ustawiona
             startDate = LocalDateTime.now(); // Ustaw aktualną datę i czas jako datę rozpoczęcia
-        }
-        if(image == null) {
-            image = "doge.jpg";
         }
         actualPrice = startingPrice;
     }
@@ -127,7 +131,15 @@ public class Auction {
     public void setImage(String image) {
         this.image = image;
     }
+/*
+    public byte[] getFileContent() {
+        return fileContent;
+    }
 
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
+    }
+*/
     public Set<Bid> getBids() {
         return bids;
     }
@@ -151,5 +163,9 @@ public class Auction {
     public void setActualPrice(Double actualPrice) {
         this.actualPrice = actualPrice;
     }
+/*
+    public String getBase64content(){
+        return Base64.getEncoder().encodeToString(fileContent);
+    }*/
 }
 

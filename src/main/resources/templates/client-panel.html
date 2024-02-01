@@ -63,7 +63,7 @@
                     <div class="card">
                         <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${aukcja.product.nazwa}">Nazwa Produktu</h5>
+                            <h5 class="card-title" th:text="${aukcja.title}">Tytuł aukcji</h5>
                             <p class="card-text" th:text="${aukcja.description}">Opis...</p>
                             <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
                             <a href="#" class="btn btn-primary" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>

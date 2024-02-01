@@ -37,6 +37,9 @@ public class UserController {
     private ProductService productService;
     private CategoryService categoryService;
 
+    /*8@Autowired
+    private FileServiceImpl fileServiceImpl;*/
+
     private BidService bidService;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -105,6 +108,28 @@ public class UserController {
         model.addAttribute("products", productService.getProducts());
         return "create-auction";
     }
+
+    /*@PostMapping("/save-auction")
+    public String createAuction(Principal principal, @ModelAttribute("auction") Auction auction, @RequestParam("multipartFile") MultipartFile multipartFile) throws IOException {
+        if(multipartFile.isEmpty()){
+            return "redirect:/panel";
+        }
+        /* filename = StringUtils.cleanPath(obraz.getOriginalFilename());
+        try {
+            Path targetLocation = Paths.get("src/main/resources/static/img").resolve(filename);
+            Files.copy(obraz.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }*/
+       /* fileServiceImpl.saveFile(multipartFile);
+        String username = principal.getName();
+        User logged = repository.findByUsername(username);
+        auction.setUser(logged);
+        auction.setImage(multipartFile.getOriginalFilename());
+        auction.setFileContent(multipartFile.getBytes());
+        auctionService.addAuction(auction);
+        return "redirect:/panel"; // Przekieruj po pomyślnym utworzeniu aukcji
+    }*/
 
     @PostMapping("/save-auction")
     public String createAuction(Principal principal, @ModelAttribute("auction") Auction auction, @RequestParam("obraz") MultipartFile obraz) {
