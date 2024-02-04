@@ -19,10 +19,12 @@ public class AuctionChecker {
 
     private final AuctionService auctionService;
     private final OrderService orderService;
+    private EmailService emailService;
 
-    public AuctionChecker(AuctionService auctionService, OrderService orderService) {
+    public AuctionChecker(AuctionService auctionService, OrderService orderService, EmailService emailService) {
         this.auctionService = auctionService;
         this.orderService = orderService;
+        this.emailService = emailService;
     }
 
     @Scheduled(fixedRate = 60000) // Uruchamia zadanie co 60 sekund
@@ -35,6 +37,9 @@ public class AuctionChecker {
                 logger.info("Zakończono aukcję: " + auction.getTitle() + " z ceną " + highestBid.getPrice());
                 orderService.createOrderFromBid(auction, highestBid);
                 auctionService.markAuctionAsProcessed(auction);
+                String content = "<h1>Potwierdzenie zamówienia</h1>" +
+                        "<p>Właśnie wygrałeś aukcję: " + auction.getTitle() + "!</p>";
+                emailService.sendOrderConfirmationEmail(highestBid.getUser().getEmail(), "[Sknera] Potwierdzenie zamówienia", content);
             }
         }
     }

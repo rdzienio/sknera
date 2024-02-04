@@ -14,6 +14,7 @@ import pl.gienius.sknera.entity.Role;
 import pl.gienius.sknera.entity.User;
 import pl.gienius.sknera.repository.RoleRepository;
 import pl.gienius.sknera.repository.UserRepository;
+import pl.gienius.sknera.service.EmailService;
 
 @Controller
 public class RegistrationController {
@@ -30,6 +31,8 @@ public class RegistrationController {
 
     @Autowired
     private RoleController roleController;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -46,7 +49,10 @@ public class RegistrationController {
         String encodedPassword = passwordEncoder.encode(user.getPassword()); //hash hasła
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        return "redirect:/login";
+        String content = "<h1>Potwierdzenie rejestracji</h1>" +
+                "<p>Dziękujemy za założenie konta w naszym portalu aukcyjnym!</br>Miłych zakupów!</p>";
+        emailService.sendOrderConfirmationEmail(user.getEmail(), "[Sknera] Potwierdzenie rejestracji", content);
+        return "index";
     }
 
     public Role getUserRole(){
