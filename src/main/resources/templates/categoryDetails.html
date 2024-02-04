@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <title>Kategorie | Panel admina | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
 <div class="container">
@@ -43,46 +43,44 @@
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
-                </li>
-                <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/products}">Produkty</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/categories}">Kategorie</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/products/add}">Dodaj produkt</a></li>
             </ul>
-        </div>
-
-        <div class="col-md-9">
-            <h2>Najnowsze aukcje</h2>
-            <div th:if="${aukcje.isEmpty()}">
-                <p>Nie znaleziono żadnych aukcji.</p>
-            </div>
-            <div class="row d-flex" th:unless="${aukcje.isEmpty()}">
-                <div class="col-md-4 mb-3 d-flex align-items-stretch" th:each="aukcja, iterStat : ${aukcje}">
-                    <div class="card w-100">
-                        <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" th:text="${aukcja.title}">Nazwa Produktu</h5>
-                            <p class="card-text" th:text="${aukcja.description}">Opis...</p>
-                            <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
-                            <a href="#" class="btn btn-primary mt-auto" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
-        Dzienio / Powered by Bootstrap
-    </footer>
+
+<!-- Nagłówek i menu -->
+<div class="container mt-6">
+    <h2>Lista Produktów</h2>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}">
+            <th scope="row" th:text="${category.id}">1</th>
+            <td th:text="${category.nazwa}">Nazwa Kategorii</td>
+            <td>
+                <!-- Przycisk do edycji produktu -->
+                <a th:href="@{/admin/categories/edit/{id}(id=${category.id})}" class="btn btn-primary btn-sm">Edytuj</a>
+                <!-- Przycisk do usuwania produktu -->
+                <a th:href="@{/admin/categories/delete/{id}(id=${category.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć tą kategorię?')">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+<!-- Stopka -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>

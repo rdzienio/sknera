@@ -18,9 +18,11 @@ public class AuctionService {
 
     Logger logger = LoggerFactory.getLogger(AuctionService.class);
     private AuctionRepository auctionRepository;
+    private BidService bidService;
 
-    public AuctionService(AuctionRepository auctionRepository) {
+    public AuctionService(AuctionRepository auctionRepository, BidService bidService) {
         this.auctionRepository = auctionRepository;
+        this.bidService = bidService;
     }
 
     @Transactional
@@ -79,5 +81,32 @@ public class AuctionService {
         auction.getBids().add(bid);
         auction.setActualPrice(bid.getPrice());
         auctionRepository.save(auction);
+    }
+
+    public Bid getHighestBid(Long auctionId){
+        List<Bid> bidList = bidService.getHighestBid(auctionId);
+        if (!bidList.isEmpty()) {
+            return bidList.get(0);
+            // Wykonaj operacje na najwyższej ofercie
+        }
+        return null;
+    }
+
+    public List<Auction> getEndedAuctions(LocalDateTime date){
+        return auctionRepository.findByEndDateBeforeAndProcessedFalse(date);
+    }
+
+    public void markAuctionAsProcessed(Auction auction){
+        auction.setProcessed(true);
+        auctionRepository.save(auction);
+
+    }
+
+    public Integer countActiveAuctions(){
+        return getActiveAuctions().size();
+    }
+
+    public Integer countEndedAuctions(){
+        return getEndedAuctions(LocalDateTime.now()).size();
     }
 }

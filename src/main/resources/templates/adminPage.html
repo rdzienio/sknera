@@ -39,36 +39,60 @@
         </div>
     </header>
 </div>
+<div class="container">
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <li sec:authorize="hasRole('ADMIN')" class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
-                <li class="list-group-item">
-                    <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
-                </li>
-                <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/products}">Produkty</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/categories}">Kategorie</a></li>
             </ul>
         </div>
-
-        <div class="col-md-9">
-            <h2>Panel klienta <span sec:authentication="name"></span></h2>
-            <div th:if="${aukcje.isEmpty()}">
-                <p>Nie znaleziono żadnych aukcji.</p>
+    </div>
+</div>
+    <div class="container mt-4">
+        <div class="row align-items-stretch">
+            <!-- Liczba zamówień -->
+            <div class="col-md-3 d-flex">
+                <div class="card text-white bg-primary mb-3 w-100">
+                    <div class="card-header">Liczba zamówień</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${orderCount} ?: 'Brak danych'">0</h5>
+                        <p class="card-text">Całkowita liczba zamówień w systemie.</p>
+                    </div>
+                </div>
             </div>
-            <div class="row d-flex" th:unless="${aukcje.isEmpty()}">
-                <div class="col-md-4 mb-3 d-flex align-items-stretch" th:each="aukcja, iterStat : ${aukcje}">
-                    <div class="card w-100">
-                        <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" th:text="${aukcja.title}">Nazwa Produktu</h5>
-                            <p class="card-text" th:text="${aukcja.description}">Opis...</p>
-                            <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
-                            <a href="#" class="btn btn-primary mt-auto" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
-                        </div>
+
+            <!-- Liczba aktywnych aukcji -->
+            <div class="col-md-3 d-flex">
+                <div class="card text-white bg-success mb-3 w-100">
+                    <div class="card-header">Aktywne aukcje</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${activeAuctionsCount} ?: 'Brak danych'">0</h5>
+                        <p class="card-text">Liczba aktualnie trwających aukcji.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liczba zakończonych aukcji -->
+            <div class="col-md-3 d-flex">
+                <div class="card text-white bg-danger mb-3 w-100">
+                    <div class="card-header">Zakończone aukcje</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${endedAuctionsCount} ?: 'Brak danych'">0</h5>
+                        <p class="card-text">Liczba zakończonych aukcji.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liczba ofert -->
+            <div class="col-md-3 d-flex">
+                <div class="card text-white bg-success mb-3 w-100">
+                    <div class="card-header">Liczba ofert</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${bidCount} ?: 'Brak danych'">0</h5>
+                        <p class="card-text">Całkowita liczba ofert złożonych w systemie.</p>
                     </div>
                 </div>
             </div>

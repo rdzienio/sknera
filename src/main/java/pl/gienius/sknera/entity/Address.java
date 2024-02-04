@@ -18,6 +18,8 @@ public class Address {
     @NotBlank
     private String country;
 
+
+
     public Long getId() {
         return id;
     }
@@ -57,4 +59,5 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
+
 }

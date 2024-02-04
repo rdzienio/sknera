@@ -43,6 +43,8 @@ public class Auction {
     private String title;
 
     private String image;
+
+    private boolean processed = false;
    /* @Lob
     //@Type(type = "org.hibernate.type.BinaryType")
     //@Column(columnDefinition="BLOB", name = "content")
@@ -162,6 +164,14 @@ public class Auction {
 
     public void setActualPrice(Double actualPrice) {
         this.actualPrice = actualPrice;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 /*
     public String getBase64content(){

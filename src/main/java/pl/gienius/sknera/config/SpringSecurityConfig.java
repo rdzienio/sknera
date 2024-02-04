@@ -52,8 +52,9 @@ public class SpringSecurityConfig {
                                 mvcMatcherBuilder.pattern("/place-bid/**"),
                                 mvcMatcherBuilder.pattern("/auction-details/**"),
                                 mvcMatcherBuilder.pattern("/panel/**")
-                        ).hasRole("USER")
+                        ).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(
+                                mvcMatcherBuilder.pattern("/admin"),
                                 mvcMatcherBuilder.pattern("/admin/**")
                         ).hasRole("ADMIN")
                         .requestMatchers(

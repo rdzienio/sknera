@@ -35,4 +35,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     // Metoda do pobierania aktywnych aukcji dla danego użytkownika
     @Query("SELECT a FROM Auction a WHERE a.user = :user AND a.endDate > :now")
     List<Auction> findActiveAuctionsByUser(User user, LocalDateTime now);
+
+    List<Auction> findByEndDateBeforeAndProcessedFalse(LocalDateTime endDate);
 }

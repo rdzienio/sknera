@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj kategorię | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Dodaj kategorię</h2>
+    <form th:action="@{/admin/categories/add}" th:object="${category}" method="post">
+        <div class="form-group">
+            <label for="nazwa">Nazwa</label>
+            <input type="text" id="nazwa" th:field="*{nazwa}" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

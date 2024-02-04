@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <title>Produkty | Panel admina | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
 <div class="container">
@@ -29,9 +29,10 @@
             <div class="row nav-link">
                 <div sec:authorize=" isAuthenticated()">
                     Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
-                    <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
-                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
-            </span>
+                    <span>
+                        <form th:action="@{/logout}" id="logoutForm" th:method="post" style="display: none;"></form>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Wyloguj się</a>
+                    </span>
                 </div>
                 <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
                 <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
@@ -43,36 +44,38 @@
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
-                </li>
-                <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/admin/products}">Produkty</a></li>
             </ul>
         </div>
-
-        <div class="col-md-9">
-            <h2>Najnowsze aukcje</h2>
-            <div th:if="${aukcje.isEmpty()}">
-                <p>Nie znaleziono żadnych aukcji.</p>
-            </div>
-            <div class="row d-flex" th:unless="${aukcje.isEmpty()}">
-                <div class="col-md-4 mb-3 d-flex align-items-stretch" th:each="aukcja, iterStat : ${aukcje}">
-                    <div class="card w-100">
-                        <img class="card-img-top" th:src="@{/img/{imageName}(imageName=${aukcja.image})}" alt="Zdjęcie produktu">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" th:text="${aukcja.title}">Nazwa Produktu</h5>
-                            <p class="card-text" th:text="${aukcja.description}">Opis...</p>
-                            <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
-                            <a href="#" class="btn btn-primary mt-auto" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
+
+
+<div class="container mt-5">
+    <h2>Edytuj produkt</h2>
+    <form th:action="@{/admin/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+        <div class="form-group">
+            <label for="nazwa">Nazwa:</label>
+            <input type="text" id="nazwa" th:field="*{nazwa}" class="form-control" placeholder="Nazwa produktu" required/>
+        </div>
+        <div class="form-group">
+            <label for="opis">Opis:</label>
+            <textarea id="opis" th:field="*{opis}" class="form-control" placeholder="Opis produktu"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="category">Kategoria:</label>
+            <select id="category" th:field="*{category}" class="form-control">
+                <option value="">Wybierz kategorię...</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.id}"
+                        th:text="${cat.nazwa}"
+                        th:selected="${cat.id == product.category.id}">
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+    </form>
 </div>
 
 <div class="container">

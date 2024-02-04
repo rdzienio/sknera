@@ -26,6 +26,7 @@ public class Bid {
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
+
     @PrePersist
     public void prePersist() {
         if (bidTime == null) { // Ustaw startDate tylko jeśli nie została już ustawiona
