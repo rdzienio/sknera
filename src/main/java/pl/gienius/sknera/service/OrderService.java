@@ -1,6 +1,5 @@
 package pl.gienius.sknera.service;
 
-import org.apache.catalina.LifecycleState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import pl.gienius.sknera.entity.Order;
 import pl.gienius.sknera.repository.OrderRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -31,7 +31,7 @@ public class OrderService {
         newOrder.setStatus(Order.OrderStatus.CREATED);
         newOrder.setAuction(auction);
         newOrder.setOrderDate(auction.getEndDate());
-
+        addOrder(newOrder);
     }
 
     public void updateStatus(Long orderId, Order.OrderStatus status) {
@@ -47,5 +47,17 @@ public class OrderService {
 
     public Integer orderCount() {
         return getAllOrders().size();
+    }
+
+    public List<Order> getOrdersByBuyer(Long buyerId) {
+        return orderRepository.findOrdersByUser(buyerId);
+    }
+
+    public List<Order> getOrdersBySeller(Long sellerId){
+        return orderRepository.findByAuction_User_Id(sellerId);
+    }
+
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
     }
 }

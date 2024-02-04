@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="pl">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">Sknera - najlepsze ceny w
+                Internecie</a>
+        </div>
 
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a href="/" class="nav-link px-2 link-secondary">Home</a>
+            </li>
+            <li>
+                <a href="/all" class="nav-link px-2">Aukcje</a>
+            </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <div class="row nav-link">
+                <div sec:authorize=" isAuthenticated()">
+                    Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
+                    <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
+                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
+            </span>
+                </div>
+                <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
+                <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li sec:authorize="hasRole('ADMIN')" class="list-group-item"><a href="#" th:href="@{/admin}">Panel
+                    administratorski</a></li>
+                <li class="list-group-item">
+                    <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
+                </li>
+                <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2>Edytuj aukcję</h2>
+            <form th:action="@{/update-auction}" th:object="${auction}" method="post">
+                <!-- Ukryte pola dla atrybutów, które nie są edytowalne -->
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{product.id}" name="product_id">
+                <input type="hidden" th:field="*{category.id}" name="category_id">
+                <input type="hidden" th:field="*{user.id}" name="user_id">
+                <input type="hidden" th:field="*{startingPrice}">
+                <input type="hidden" th:field="*{actualPrice}">
+                <input type="hidden" th:field="*{startDate}">
+                <input type="hidden" th:field="*{endDate}">
+                <input type="hidden" th:field="*{image}">
+                <input type="hidden" th:field="*{processed}">
+
+                <!-- Pole do edycji tytułu -->
+                <div class="form-group">
+                    <label for="title">Tytuł:</label>
+                    <input type="text" id="title" th:field="*{title}" class="form-control"
+                           placeholder="Podaj nowy tytuł aukcji">
+                </div>
+
+                <!-- Pole do edycji opisu -->
+                <div class="form-group">
+                    <label for="description">Opis:</label>
+                    <textarea id="description" th:field="*{description}" class="form-control" rows="3"
+                              placeholder="Opis produktu"></textarea>
+                </div>
+
+                <!-- Przycisk do zatwierdzenia zmian -->
+                <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Stopka identyczna jak w poprzednim szablonie -->
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        Copyright ® Robert Dzienio / Powered by Bootstrap
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

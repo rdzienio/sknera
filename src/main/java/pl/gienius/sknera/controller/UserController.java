@@ -1,5 +1,6 @@
 package pl.gienius.sknera.controller;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.gienius.sknera.entity.Address;
 import pl.gienius.sknera.entity.Auction;
 import pl.gienius.sknera.entity.User;
@@ -36,6 +39,7 @@ public class UserController {
     private AddressService addressService;
     private ProductService productService;
     private CategoryService categoryService;
+    private OrderService orderService;
 
     /*8@Autowired
     private FileServiceImpl fileServiceImpl;*/
@@ -44,7 +48,7 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserRepository reps, AuctionService auctionService, AddressService addressService, ProductService productService, CategoryService categoryService, BidService bidService){
+    public UserController(UserRepository reps, AuctionService auctionService, AddressService addressService, ProductService productService, CategoryService categoryService, BidService bidService, OrderService orderService){
         this.repository=reps;
         passwordEncoder=new BCryptPasswordEncoder();
         this.auctionService=auctionService;
@@ -52,6 +56,7 @@ public class UserController {
         this.productService=productService;
         this.categoryService=categoryService;
         this.bidService=bidService;
+        this.orderService=orderService;
 
     }
     public void saveUser(User user){
@@ -149,7 +154,7 @@ public class UserController {
     }
 
     @GetMapping("/auction-details/{auctionId}")
-    public String auctionDetails(@PathVariable Long auctionId, Model model) {
+    public String auctionDetails(@PathVariable Long auctionId, Model model, Principal principal) {
         model.addAttribute("auction", auctionService.getAuctionById(auctionId));
         model.addAttribute("categories", categoryService.getAllCategories());
         return "auction-details";
@@ -167,5 +172,81 @@ public class UserController {
         return "viewAuctions";
     }
 
+    // Metoda do przetwarzania formularza edycji aukcji
+    @PostMapping("/update-auction")
+    public String updateAuction(@Valid @ModelAttribute("auction") Auction auction, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "edit-auction";
+        }
+        auctionService.updateAuction(auction);
+        redirectAttributes.addFlashAttribute("successMessage", "Aukcja została pomyślnie zaktualizowana.");
+        return "redirect:/auction-details/" + auction.getId();
+    }
+
+    @GetMapping("/update-auction/{id}")
+    public String showEditAuctionForm(@PathVariable("id") Long id, Model model) {
+        Auction auction = auctionService.findById(id);
+        model.addAttribute("auction", auction);
+        return "edit-auction";
+    }
+
+    @GetMapping("/view-orders")
+    public String getUserOrders(Principal principal, Model model){
+        String username = principal.getName();
+        User logged = repository.findByUsername(username);
+        List<Order> orderList = new ArrayList<Order>();
+        if(logged!=null){
+            orderList = orderService.getOrdersByBuyer(logged.getId());
+        }
+        model.addAttribute("aukcje", orderList);
+        return "userOrders";
+    }
+
+    @GetMapping("/view-sold")
+    public String getSoldOrders(Principal principal, Model model){
+        String username = principal.getName();
+        User logged = repository.findByUsername(username);
+        List<Order> orderList = new ArrayList<Order>();
+        if(logged!=null){
+            orderList = orderService.getOrdersBySeller(logged.getId());
+        }
+        model.addAttribute("aukcje", orderList);
+        return "soldOrders";
+    }
+
+    @GetMapping("/order-edit/{id}")
+    public String showOrderEditForm(@PathVariable("id") Long id, Model model) {
+        Order order = orderService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        model.addAttribute("order", order);
+        return "editOrder";
+    }
+
+    // Metoda obsługująca żądanie POST do zapisania zmian w zamówieniu
+    @PostMapping("/order-update")
+    public String updateOrder(@ModelAttribute("order") Order order, RedirectAttributes redirectAttributes) {
+        // Znajdź istniejące zamówienie i zaktualizuj jego status
+        Order existingOrder = orderService.findById(order.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + order.getId()));
+
+        //existingOrder.setStatus(order.getStatus()); // Ustaw nowy status
+        //orderService.save(existingOrder); // Zapisz zmiany
+        orderService.updateStatus(existingOrder.getId(), order.getStatus());
+
+        redirectAttributes.addFlashAttribute("successMessage", "Zamówienie zostało zaktualizowane.");
+        return "redirect:/view-sold";
+    }
+
+    @GetMapping("/view-bids")
+    public String getBids(Principal principal, Model model){
+        String username = principal.getName();
+        User logged = repository.findByUsername(username);
+        List<Bid> bidList = new ArrayList<Bid>();
+        if(logged!=null){
+            bidList = bidService.getBidsByUser(logged);
+        }
+        model.addAttribute("oferty", bidList);
+        return "showBids";
+    }
 
 }

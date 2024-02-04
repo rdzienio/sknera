@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <title>Zamówienia od kupujących | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
 <div class="container">
@@ -29,10 +29,9 @@
             <div class="row nav-link">
                 <div sec:authorize=" isAuthenticated()">
                     Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
-                    <span>
-                        <form th:action="@{/logout}" id="logoutForm" th:method="post" style="display: none;"></form>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Wyloguj się</a>
-                    </span>
+                    <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
+                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
+            </span>
                 </div>
                 <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
                 <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
@@ -54,33 +53,36 @@
                 <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
             </ul>
         </div>
-        <div th:if="${address == null}">Pusto!</div>
 
-        <div class="col-md-9" th:unless="${address == null}">
-            <h2 th:text="${address != null ? 'Edytuj Adres' : 'Dodaj Adres'}">Edycja/Dodawanie Adresu</h2>
-            <form th:action="@{/update-address}" th:object="${address}" method="post">
-                <div class="form-group">
-                    <label for="street">Ulica:</label>
-                    <input type="text" id="street" th:field="*{street}" class="form-control" placeholder="Wpisz ulicę">
-                </div>
-                <div class="form-group">
-                    <label for="city">Miasto:</label>
-                    <input type="text" id="city" th:field="*{city}" class="form-control" placeholder="Wpisz miasto">
-                </div>
-                <div class="form-group">
-                    <label for="zip">Kod pocztowy:</label>
-                    <input type="text" id="zip" th:field="*{zip}" class="form-control" placeholder="Wpisz kod pocztowy">
-                </div>
-                <div class="form-group">
-                    <label for="country">Kraj:</label>
-                    <input type="text" id="country" th:field="*{country}" class="form-control" placeholder="Wpisz kraj">
-                </div>
-                <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-            </form>
+        <div class="container col-md-9">
+            <h2>Zamówienia od kupujących</h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sprzedający</th>
+                    <th>Kupujący</th>
+                    <th>Aukcja</th>
+                    <th>Cena koncowa</th>
+                    <th>Status</th>
+                    <th>Data zamówienia</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.auction.user.username}"></td>
+                    <td th:text="${order.buyer.username}"></td>
+                    <td th:text="${order.auction.title}"></td>
+                    <td th:text="${order.auction.actualPrice}"></td>
+                    <td th:text="${order.status}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
 <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
         Dzienio / Powered by Bootstrap

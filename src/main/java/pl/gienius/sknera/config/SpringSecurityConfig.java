@@ -34,6 +34,9 @@ public class SpringSecurityConfig {
                         .requestMatchers(
                                 mvcMatcherBuilder.pattern("/"),
                                 mvcMatcherBuilder.pattern("/all"),
+                                mvcMatcherBuilder.pattern("/search"),
+                                mvcMatcherBuilder.pattern("/searchForm"),
+                                mvcMatcherBuilder.pattern("/searchResults"),
                                 mvcMatcherBuilder.pattern("/images/**"),
                                 mvcMatcherBuilder.pattern("/img/**"),
                                 mvcMatcherBuilder.pattern("/category/**"),

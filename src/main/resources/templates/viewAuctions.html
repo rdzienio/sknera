@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-md-9">
-            <h2>Najnowsze aukcje</h2>
+            <h2>Twoje aukcje</h2>
             <div th:if="${aukcje.isEmpty()}">
                 <p>Nie znaleziono żadnych aukcji.</p>
             </div>
@@ -67,6 +67,7 @@
                             <p class="card-text" th:text="${aukcja.description}">Opis...</p>
                             <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
                             <a href="#" class="btn btn-primary mt-auto" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
+                            <a th:href="@{/update-auction/{auctionId}(auctionId=${aukcja.id})}" class="btn btn-danger">Edytuj</a>
                         </div>
                     </div>
                 </div>

@@ -51,6 +51,7 @@
                 <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
                 <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
                 <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+                <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
             </ul>
         </div>
 
@@ -68,6 +69,7 @@
                             <p class="card-text" th:text="${aukcja.description}">Opis...</p>
                             <p><span class="card-text" th:text="${aukcja.actualPrice}">Cena</span> PLN</p>
                             <a href="#" class="btn btn-primary mt-auto" th:href="@{/auction-details/{id}(id=${aukcja.id})}">Zobacz szczegóły</a>
+                            <a th:href="@{/update-auction/{auctionId}(auctionId=${aukcja.id})}" class="btn btn-danger">Edytuj</a>
                         </div>
                     </div>
                 </div>

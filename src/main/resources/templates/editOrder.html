@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <title>Twoje zamówienia | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
 <div class="container">
@@ -54,35 +54,34 @@
                 <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
             </ul>
         </div>
-        <div th:if="${address == null}">Pusto!</div>
 
-        <div class="col-md-9" th:unless="${address == null}">
-            <h2 th:text="${address != null ? 'Edytuj Adres' : 'Dodaj Adres'}">Edycja/Dodawanie Adresu</h2>
-            <form th:action="@{/update-address}" th:object="${address}" method="post">
+        <div class="col-md-9">
+            <h2>Edycja zamówienia</h2>
+            <form th:action="@{/order-update}" th:object="${order}" method="post">
+                <!-- Ukryte pole dla ID zamówienia -->
+                <input type="hidden" th:field="*{id}"/>
+
+                <!-- Lista rozwijana dla statusu zamówienia -->
                 <div class="form-group">
-                    <label for="street">Ulica:</label>
-                    <input type="text" id="street" th:field="*{street}" class="form-control" placeholder="Wpisz ulicę">
+                    <label for="status">Status zamówienia:</label>
+                    <select id="status" th:field="*{status}" class="form-control">
+                        <option value="CREATED" th:selected="${order.status == 'CREATED'}">Utworzone</option>
+                        <option value="PENDING" th:selected="${order.status == 'PENDING'}">Oczekujące</option>
+                        <option value="SENT" th:selected="${order.status == 'SENT'}">Wysłane</option>
+                        <option value="COMPLETED" th:selected="${order.status == 'COMPLETED'}">Zakończone</option>
+                        <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Anulowane</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="city">Miasto:</label>
-                    <input type="text" id="city" th:field="*{city}" class="form-control" placeholder="Wpisz miasto">
-                </div>
-                <div class="form-group">
-                    <label for="zip">Kod pocztowy:</label>
-                    <input type="text" id="zip" th:field="*{zip}" class="form-control" placeholder="Wpisz kod pocztowy">
-                </div>
-                <div class="form-group">
-                    <label for="country">Kraj:</label>
-                    <input type="text" id="country" th:field="*{country}" class="form-control" placeholder="Wpisz kraj">
-                </div>
+
+                <!-- Przycisk do zatwierdzenia zmian -->
                 <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
             </form>
         </div>
     </div>
 </div>
-
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ®
+        Robert
         Dzienio / Powered by Bootstrap
     </footer>
 </div>

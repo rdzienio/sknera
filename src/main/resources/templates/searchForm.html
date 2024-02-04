@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Panel klienta | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+    <title>Wyszukiwarka aukcji | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
 <div class="container">
@@ -28,7 +28,7 @@
         <div class="col-md-3 text-end">
             <div class="row nav-link">
                 <div sec:authorize=" isAuthenticated()">
-                    Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
+                    Hello, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
                     <span>
                         <form th:action="@{/logout}" id="logoutForm" th:method="post" style="display: none;"></form>
                         <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Wyloguj się</a>
@@ -43,44 +43,34 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-3">
+            <h3>Kategorie</h3>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
+                    <a href="/all">Wszystkie</a>
                 </li>
-                <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
+                <!-- Pętla po kategoriach -->
+                <li class="list-group-item" th:each="kategoria : ${kategorie}">
+                    <a th:href="@{'/category/' + ${kategoria.id}}" th:text="${kategoria.nazwa}">Kategoria</a>
+                </li>
             </ul>
         </div>
-        <div th:if="${address == null}">Pusto!</div>
 
-        <div class="col-md-9" th:unless="${address == null}">
-            <h2 th:text="${address != null ? 'Edytuj Adres' : 'Dodaj Adres'}">Edycja/Dodawanie Adresu</h2>
-            <form th:action="@{/update-address}" th:object="${address}" method="post">
+        <div class="col-md-9">
+            <h2>Wyszukiwarka</h2>
+            <form th:action="@{/search}" method="get">
                 <div class="form-group">
-                    <label for="street">Ulica:</label>
-                    <input type="text" id="street" th:field="*{street}" class="form-control" placeholder="Wpisz ulicę">
+                    <input type="text" class="form-control mb-3" id="searchQuery" name="searchQuery" placeholder="Wpisz frazę">
                 </div>
-                <div class="form-group">
-                    <label for="city">Miasto:</label>
-                    <input type="text" id="city" th:field="*{city}" class="form-control" placeholder="Wpisz miasto">
+                <div class="form-group d-flex flex-column flex-md-row justify-content-between">
+                    <button type="submit" class="btn btn-primary mb-2 mb-md-0 mr-md-2" name="searchType" value="title">Szukaj po tytule</button>
+                    <button type="submit" class="btn btn-secondary mb-2 mb-md-0 mr-md-2" name="searchType" value="description">Szukaj po opisie</button>
+                    <button type="submit" class="btn btn-success mb-2 mb-md-0 mr-md-2" name="searchType" value="user">Szukaj po użytkowniku</button>
+                    <button type="submit" class="btn btn-info mb-2" name="searchType" value="dateRange">Szukaj po zakresie dat</button>
                 </div>
-                <div class="form-group">
-                    <label for="zip">Kod pocztowy:</label>
-                    <input type="text" id="zip" th:field="*{zip}" class="form-control" placeholder="Wpisz kod pocztowy">
-                </div>
-                <div class="form-group">
-                    <label for="country">Kraj:</label>
-                    <input type="text" id="country" th:field="*{country}" class="form-control" placeholder="Wpisz kraj">
-                </div>
-                <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
             </form>
         </div>
     </div>
 </div>
-
 <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
         Dzienio / Powered by Bootstrap

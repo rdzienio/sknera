@@ -37,4 +37,10 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findActiveAuctionsByUser(User user, LocalDateTime now);
 
     List<Auction> findByEndDateBeforeAndProcessedFalse(LocalDateTime endDate);
+
+    //wyszukiwarka
+    List<Auction> findByTitleContainingIgnoreCase(String title);
+
+    List<Auction> findByUserUsernameContainingIgnoreCase(String username);
+    List<Auction> findByDescriptionContainingIgnoreCase(String description);
 }

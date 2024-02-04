@@ -120,4 +120,10 @@ public class AdminController {
         categoryService.addCategory(category);
         return "redirect:/admin/categories";
     }
+
+    @GetMapping("/allOrders")
+    public String getAllOrders(Model model) {
+        model.addAttribute("orders", orderService.getAllOrders());
+        return "allOrders";
+    }
 }

@@ -109,4 +109,8 @@ public class AuctionService {
     public Integer countEndedAuctions(){
         return getEndedAuctions(LocalDateTime.now()).size();
     }
+
+    public Auction findById(Long id) {
+        return auctionRepository.getAuctionById(id);
+    }
 }

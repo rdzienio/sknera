@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="pl">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Złozone oferty | Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
+</head>
+<body>
+<div class="container">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+      <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">Sknera - najlepsze ceny w
+        Internecie</a>
+    </div>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <li>
+        <a href="/" class="nav-link px-2 link-secondary">Home</a>
+      </li>
+      <li>
+        <a href="/all" class="nav-link px-2">Aukcje</a>
+      </li>
+    </ul>
+
+    <div class="col-md-3 text-end">
+      <div class="row nav-link">
+        <div sec:authorize=" isAuthenticated()">
+          Witaj, <a th:href="@{/panel}"><span sec:authentication="name"></span></a>!
+          <span><a href="#" onclick="document.getElementById('logout').submit()">Wyloguj się</a>
+                <form th:action="@{/logout}" id="logout" th:method="post" style="display: none;"/>
+            </span>
+        </div>
+        <a sec:authorize="isAnonymous()" href="/login">Logowanie</a>
+        <a sec:authorize="isAnonymous()" href="/register">Rejestracja</a>
+      </div>
+    </div>
+  </header>
+</div>
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a href="#" th:href="@{/edit-address}">Edytuj swoje dane</a>
+        </li>
+        <li class="list-group-item"><a href="#" th:href="@{/add-auction}">Wystaw aukcję</a></li>
+        <li class="list-group-item"><a href="#" th:href="@{/view-auctions}">Twoje aukcje</a></li>
+        <li class="list-group-item"><a href="#" th:href="@{/view-orders}">Twoje zamówienia</a></li>
+        <li class="list-group-item"><a href="#" th:href="@{/view-sold}">Zamówienia kupujących</a></li>
+        <li class="list-group-item"><a href="#" th:href="@{/view-bids}">Historia ofert</a></li>
+      </ul>
+    </div>
+
+    <div class="container col-md-9">
+      <h2>Złożone oferty</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Aukcja</th>
+          <th>Twoja oferta</th>
+          <th>Data oferty</th>
+          <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bid : ${oferty}">
+          <td th:text="${bid.auction.title}"></td>
+          <td th:text="${bid.price}"></td>
+          <td th:text="${bid.bidTime}"></td>
+          <td><a th:href="@{/admin/auction-details/{id}(id=${bid.auction.id})}" class="btn btn-primary btn-sm">Pokaż</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
+    Dzienio / Powered by Bootstrap
+  </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
