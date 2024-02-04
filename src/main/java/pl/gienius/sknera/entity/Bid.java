@@ -29,8 +29,8 @@ public class Bid {
 
     @PrePersist
     public void prePersist() {
-        if (bidTime == null) { // Ustaw startDate tylko jeśli nie została już ustawiona
-            bidTime = LocalDateTime.now(); // Ustaw aktualną datę i czas jako datę rozpoczęcia
+        if (bidTime == null) {
+            bidTime = LocalDateTime.now();
         }
 
     }

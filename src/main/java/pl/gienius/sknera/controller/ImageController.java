@@ -46,7 +46,7 @@ public class ImageController {
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        return "index"; // Przekieruj po udanym przesłaniu
+        return "index";
     }
 }
 

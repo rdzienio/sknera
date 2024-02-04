@@ -21,17 +21,17 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User buyer; // Użytkownik, który dokonał zakupu
+    private User buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", nullable = false)
-    private Auction auction; // Szczegóły aukcji
+    private Auction auction;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private OrderStatus status; // Status zamówienia
+    private OrderStatus status;
 
-    private LocalDateTime orderDate; // Data złożenia zamówienia
+    private LocalDateTime orderDate;
 
 
     public Long getId() {

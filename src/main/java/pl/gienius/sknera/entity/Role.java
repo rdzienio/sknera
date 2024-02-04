@@ -14,7 +14,7 @@ public class Role {
     private Integer id;
     @Enumerated(EnumType.STRING)//przechowywane w postaci łańcucha znaków
     private Types type;
-    @ManyToMany(mappedBy = "roles")//właściciel relacji to roles
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role(Types type){

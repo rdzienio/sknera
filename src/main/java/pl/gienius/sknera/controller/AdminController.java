@@ -78,14 +78,14 @@ public class AdminController {
         return "edit-product"; // Nazwa widoku formularza do edycji produktu
     }
 
-    // Metoda do przetwarzania żądania edycji produktu
+
     @PostMapping("/products/edit/{id}")
     public String updateProduct(@PathVariable("id") Long id, @ModelAttribute("product") Product product) {
         productService.addProduct(product);
         return "redirect:/admin/products";
     }
 
-    // Metoda do usuwania produktu
+
     @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         productService.deleteById(id);

@@ -21,19 +21,19 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     public List<Auction> findAuctionsByUser(User user);
 
-    // Metoda do pobierania aktywnych aukcji
+
     @Query("SELECT a FROM Auction a WHERE a.endDate > ?1")
     List<Auction> findActiveAuctions(LocalDateTime now);
 
-    // Metoda do pobierania 10 najnowszych aukcji
+
     @Query("SELECT a FROM Auction a ORDER BY a.endDate DESC")
     List<Auction> findTop10ByOrderByEndDateDesc(Pageable pageable);
 
-    // Metoda do pobierania aktualnych aukcji dla danej kategorii
+
     @Query("SELECT a FROM Auction a WHERE a.category.id = :categoryId AND a.endDate > :now")
     List<Auction> findCurrentAuctionsByCategoryId(Long categoryId, LocalDateTime now);
 
-    // Metoda do pobierania aktywnych aukcji dla danego użytkownika
+
     @Query("SELECT a FROM Auction a WHERE a.user = :user AND a.endDate > :now")
     List<Auction> findActiveAuctionsByUser(User user, LocalDateTime now);
 

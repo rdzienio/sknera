@@ -87,7 +87,6 @@ public class AuctionService {
         List<Bid> bidList = bidService.getHighestBid(auctionId);
         if (!bidList.isEmpty()) {
             return bidList.get(0);
-            // Wykonaj operacje na najwyższej ofercie
         }
         return null;
     }

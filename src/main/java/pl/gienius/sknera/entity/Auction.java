@@ -56,8 +56,8 @@ public class Auction {
 
     @PrePersist
     public void prePersist() {
-        if (startDate == null) { // Ustaw startDate tylko jeśli nie została już ustawiona
-            startDate = LocalDateTime.now(); // Ustaw aktualną datę i czas jako datę rozpoczęcia
+        if (startDate == null) {
+            startDate = LocalDateTime.now();
         }
         actualPrice = startingPrice;
     }

@@ -91,20 +91,19 @@ public class UserController {
         User logged = repository.findByUsername(username);
         Address address =  logged.getAddress();
         if (address == null) {
-            address = new Address(); // Nowy adres, jeśli użytkownik nie ma jeszcze adresu
+            address = new Address();
         }
         model.addAttribute("address", address);
         return "edit-address";
     }
 
-    // Metoda do przetwarzania formularza edycji adresu
+
     @PostMapping("/update-address")
     public String updateAddress(Principal principal, @ModelAttribute("address") Address address) {
         logger.info("POST updateAddress " + address);
         String username = principal.getName();
         User logged = repository.findByUsername(username);
         logged.setAddress(address);
-        // Zaktualizuj adres użytkownika
         addressService.updateAddress(address);
         return "edit-address";
     }
@@ -131,7 +130,7 @@ public class UserController {
         auction.setUser(logged);
         auction.setImage(filename);
         auctionService.addAuction(auction);
-        return "redirect:/panel"; // Przekieruj po pomyślnym utworzeniu aukcji
+        return "redirect:/panel";
     }
 
     @PostMapping("/place-bid/{auctionId}")
@@ -146,7 +145,7 @@ public class UserController {
         bidService.addBid(bid);
         auctionService.addBidToAuction(bidAuction, bid);
 
-        return "redirect:/auction-details/" + auctionId; // Przekierowanie po złożeniu oferty
+        return "redirect:/auction-details/" + auctionId;
     }
 
     @GetMapping("/place-bid/{auctionId}")
@@ -175,7 +174,7 @@ public class UserController {
         return "viewAuctions";
     }
 
-    // Metoda do przetwarzania formularza edycji aukcji
+
     @PostMapping("/update-auction")
     public String updateAuction(@Valid @ModelAttribute("auction") Auction auction, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -225,15 +224,13 @@ public class UserController {
         return "editOrder";
     }
 
-    // Metoda obsługująca żądanie POST do zapisania zmian w zamówieniu
+
     @PostMapping("/order-update")
     public String updateOrder(@ModelAttribute("order") Order order, RedirectAttributes redirectAttributes) {
-        // Znajdź istniejące zamówienie i zaktualizuj jego status
+
         Order existingOrder = orderService.findById(order.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + order.getId()));
 
-        //existingOrder.setStatus(order.getStatus()); // Ustaw nowy status
-        //orderService.save(existingOrder); // Zapisz zmiany
         orderService.updateStatus(existingOrder.getId(), order.getStatus());
         String content = "<h1>Zmiana statusu zamówienia</h1>" +
                 "<p>Zamówienie " + existingOrder.getAuction().getTitle() + " zmieniło status na: " + order.getStatus() + "!</p>";

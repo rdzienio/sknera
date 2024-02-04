@@ -57,6 +57,6 @@ public class HomeController {
         model.addAttribute("kategorie", kategorie);
         model.addAttribute("aukcje", aukcje);
 
-        return "wszystkieAukcje"; // Nazwa szablonu Thymeleaf
+        return "wszystkieAukcje";
     }
 }

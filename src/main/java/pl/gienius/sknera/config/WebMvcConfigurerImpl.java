@@ -15,18 +15,16 @@ public class WebMvcConfigurerImpl implements WebMvcConfigurer {
         registry.addViewController("/signup").setViewName("registerUser");
         registry.addViewController("/url_error403").setViewName("accessDenied");
     }
-    //…Tutaj można też zarejestrować globalne formatery
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        //globalna obsługa daty w formularzach
+
         registry.addFormatter(new DateFormatter("yyyy-MM-dd"));
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**")//mapowanie
-                .addResourceLocations("file:D://springimages/");//fizyczna lokaliz…
-        //Dodanie obsługi pozostałych zasobów
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:D://springimages/");
     }
 
 }
