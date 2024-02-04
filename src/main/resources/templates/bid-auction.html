@@ -51,7 +51,7 @@
                     <a href="/all">Wszystkie</a>
                 </li>
                 <!-- Pętla po kategoriach -->
-                <li class="list-group-item" th:each="kategoria : ${kategorie}">
+                <li class="list-group-item" th:each="kategoria : ${categories}">
                     <a th:href="@{'/category/' + ${kategoria.id}}" th:text="${kategoria.nazwa}">Kategoria</a>
                 </li>
             </ul>
