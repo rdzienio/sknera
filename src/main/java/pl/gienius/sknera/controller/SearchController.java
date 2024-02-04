@@ -1,6 +1,7 @@
 package pl.gienius.sknera.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import pl.gienius.sknera.entity.Category;
 import pl.gienius.sknera.service.CategoryService;
 import pl.gienius.sknera.service.SearchService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -30,6 +33,9 @@ public class SearchController {
     public String search(
             @RequestParam("searchQuery") String searchQuery,
             @RequestParam("searchType") String searchType,
+            @RequestParam(value = "searchDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate searchDate,
+            @RequestParam(value = "dateOption", required = false) String dateOption,
             Model model) {
         List<Category> kategorie = categoryService.getAllCategories();
         model.addAttribute("kategorie", kategorie);
@@ -43,9 +49,14 @@ public class SearchController {
             case "user":
                 model.addAttribute("results", searchService.searchByUser(searchQuery));
                 break;
-            case "dateRange":
-                // Przykład, zakładam że masz sposób na przekazanie dat jako dodatkowe parametry
-                // model.addAttribute("results", searchService.searchByDateRange(startDate, endDate));
+            case "date":
+                if (dateOption != null && searchDate != null) {
+                    if ("older".equals(dateOption)) {
+                        model.addAttribute("results", searchService.searchByDateOlderThan(searchDate));
+                    } else if ("newer".equals(dateOption)) {
+                        model.addAttribute("results", searchService.searchByDateNewerThan(searchDate));
+                    }
+                }
                 break;
             default:
                 // Domyślne działanie lub błąd

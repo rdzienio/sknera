@@ -43,4 +43,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     List<Auction> findByUserUsernameContainingIgnoreCase(String username);
     List<Auction> findByDescriptionContainingIgnoreCase(String description);
+    List<Auction> findByEndDateBefore(LocalDateTime endDate);
+    List<Auction> findByEndDateAfter(LocalDateTime startDate);
 }

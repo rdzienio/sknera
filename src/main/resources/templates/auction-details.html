@@ -23,6 +23,9 @@
             <li>
                 <a href="/all" class="nav-link px-2">Aukcje</a>
             </li>
+            <li>
+                <a href="/searchForm" class="btn btn-warning mt-auto">Wyszukiwarka</a>
+            </li>
         </ul>
 
         <div class="col-md-3 text-end">
@@ -48,7 +51,7 @@
                     <a href="/all">Wszystkie</a>
                 </li>
                 <!-- Pętla po kategoriach -->
-                <li class="list-group-item" th:each="kategoria : ${kategorie}">
+                <li class="list-group-item" th:each="kategoria : ${categories}">
                     <a th:href="@{'/category/' + ${kategoria.id}}" th:text="${kategoria.nazwa}">Kategoria</a>
                 </li>
             </ul>
