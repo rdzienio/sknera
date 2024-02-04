@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="pl">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sknera - najlepsze ceny w Internecie | Portal aukcyjny</title>
 </head>
 <body>
-<h1>Zalogowano!</h1>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">Sknera - najlepsze ceny w
+                Internecie</a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a href="/" class="nav-link px-2 link-secondary">Home</a>
+            </li>
+            <li>
+                <a href="/all" class="nav-link px-2">Aukcje</a>
+            </li>
+            <li>
+                <a href="/searchForm" class="btn btn-warning mt-auto">Szukaj</a>
+            </li>
+        </ul>
+    </header>
+</div>
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Dziękujemy za rejestrację!</h1>
+        <p class="lead">Twoje konto zostało pomyślnie utworzone.</p>
+        <hr class="my-4">
+        <p>Kliknij poniżej, aby wrócić na stronę główną.</p>
+        <a class="btn btn-primary btn-lg" href="/" role="button">Strona główna</a>
+    </div>
+</div>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
+        Dzienio / Powered by Bootstrap
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -24,7 +24,9 @@
                 <a href="/all" class="nav-link px-2">Aukcje</a>
             </li>
             <li>
-                <a href="/searchForm" class="btn btn-warning mt-auto">Wyszukiwarka</a>
+                <a href="/searchForm" class="btn btn-warning mt-auto"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                </svg>Szukaj</a>
             </li>
         </ul>
 
@@ -43,27 +45,71 @@
     </header>
 </div>
 <div class="container">
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-md-3">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/admin/products}">Produkty</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/admin/categories}">Kategorie</a></li>
-                <li class="list-group-item"><a href="#" th:href="@{/admin/allOrders}">Zamówienia</a></li>
-            </ul>
+    <div class="container mt-4">
+        <div class="row align-items-stretch">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#" th:href="@{/admin}">Panel administratorski</a></li>
+                    <li class="list-group-item"><a href="#" th:href="@{/admin/products}">Produkty</a></li>
+                    <li class="list-group-item"><a href="#" th:href="@{/admin/categories}">Kategorie</a></li>
+                    <li class="list-group-item"><a href="#" th:href="@{/admin/allOrders}">Zamówienia</a></li>
+                </ul>
+            </div>
+            <!-- Suma wartości aktywnych aukcji -->
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">Suma aktywnych aukcji</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${sumActive} ?: '0'">0</h5>
+                        <p class="card-text">Suma wartości aktywnych aukcji.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suma wartości sprzedanych aukcji -->
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Suma sprzedanych aukcji</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${sumSold} ?: '0'">0</h5>
+                        <p class="card-text">Suma wartości sprzedanych aukcji.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suma ogólna -->
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Suma ogólna</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${sumTotal} ?: '0'">0</h5>
+                        <p class="card-text">Łączna suma wartości wszystkich aukcji.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
     <div class="container mt-4">
         <div class="row align-items-stretch">
             <!-- Liczba zamówień -->
             <div class="col-md-3 d-flex">
-                <div class="card text-white bg-primary mb-3 w-100">
+                <div class="card text-white bg-info mb-3 w-100">
                     <div class="card-header">Liczba zamówień</div>
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title" th:text="${orderCount} ?: 'Brak danych'">0</h5>
                         <p class="card-text">Całkowita liczba zamówień w systemie.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liczba ofert -->
+            <div class="col-md-3 d-flex">
+                <div class="card text-white bg-success mb-3 w-100">
+                    <div class="card-header">Liczba ofert</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${bidCount} ?: 'Brak danych'">0</h5>
+                        <p class="card-text">Całkowita liczba ofert złożonych w systemie.</p>
                     </div>
                 </div>
             </div>
@@ -89,23 +135,14 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Liczba ofert -->
-            <div class="col-md-3 d-flex">
-                <div class="card text-white bg-success mb-3 w-100">
-                    <div class="card-header">Liczba ofert</div>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" th:text="${bidCount} ?: 'Brak danych'">0</h5>
-                        <p class="card-text">Całkowita liczba ofert złożonych w systemie.</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">Copyright ® Robert
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+    </svg>Copyright ® Robert
         Dzienio / Powered by Bootstrap
     </footer>
 </div>

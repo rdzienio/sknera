@@ -8,6 +8,7 @@ import pl.gienius.sknera.entity.Auction;
 import pl.gienius.sknera.entity.Product;
 import pl.gienius.sknera.entity.User;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,4 +46,10 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findByDescriptionContainingIgnoreCase(String description);
     List<Auction> findByEndDateBefore(LocalDateTime endDate);
     List<Auction> findByEndDateAfter(LocalDateTime startDate);
+
+    @Query("SELECT SUM(a.actualPrice) FROM Auction a")
+    BigDecimal sumActualPrice();
+
+    @Query("SELECT SUM(a.actualPrice) FROM Auction a WHERE a.processed = true")
+    BigDecimal sumActualPriceForProcessedAuctions();
 }

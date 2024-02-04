@@ -41,6 +41,8 @@ public class UserController {
     private CategoryService categoryService;
     private OrderService orderService;
 
+    private EmailService emailService;
+
     /*8@Autowired
     private FileServiceImpl fileServiceImpl;*/
 
@@ -48,7 +50,7 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserRepository reps, AuctionService auctionService, AddressService addressService, ProductService productService, CategoryService categoryService, BidService bidService, OrderService orderService){
+    public UserController(UserRepository reps, AuctionService auctionService, AddressService addressService, ProductService productService, CategoryService categoryService, BidService bidService, OrderService orderService, EmailService emailService){
         this.repository=reps;
         passwordEncoder=new BCryptPasswordEncoder();
         this.auctionService=auctionService;
@@ -57,6 +59,7 @@ public class UserController {
         this.categoryService=categoryService;
         this.bidService=bidService;
         this.orderService=orderService;
+        this.emailService=emailService;
 
     }
     public void saveUser(User user){
@@ -232,6 +235,9 @@ public class UserController {
         //existingOrder.setStatus(order.getStatus()); // Ustaw nowy status
         //orderService.save(existingOrder); // Zapisz zmiany
         orderService.updateStatus(existingOrder.getId(), order.getStatus());
+        String content = "<h1>Zmiana statusu zamówienia</h1>" +
+                "<p>Zamówienie " + existingOrder.getAuction().getTitle() + " zmieniło status na: " + order.getStatus() + "!</p>";
+        emailService.sendOrderConfirmationEmail(existingOrder.getBuyer().getEmail(), "[Sknera] Potwierdzenie zamówienia", content);
 
         redirectAttributes.addFlashAttribute("successMessage", "Zamówienie zostało zaktualizowane.");
         return "redirect:/view-sold";

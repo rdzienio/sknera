@@ -113,4 +113,16 @@ public class AuctionService {
     public Auction findById(Long id) {
         return auctionRepository.getAuctionById(id);
     }
+
+    public Double getValueOfActiveAuctions() {
+        return getValueOfAllAuctions()-getValueOfSoldAuctions();
+    }
+
+    public Double getValueOfAllAuctions(){
+        return auctionRepository.sumActualPrice().doubleValue();
+    }
+
+    public Double getValueOfSoldAuctions(){
+        return auctionRepository.sumActualPriceForProcessedAuctions().doubleValue();
+    }
 }

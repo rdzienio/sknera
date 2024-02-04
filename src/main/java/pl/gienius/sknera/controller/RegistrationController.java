@@ -52,7 +52,7 @@ public class RegistrationController {
         String content = "<h1>Potwierdzenie rejestracji</h1>" +
                 "<p>Dziękujemy za założenie konta w naszym portalu aukcyjnym!</br>Miłych zakupów!</p>";
         emailService.sendOrderConfirmationEmail(user.getEmail(), "[Sknera] Potwierdzenie rejestracji", content);
-        return "index";
+        return "test";
     }
 
     public Role getUserRole(){

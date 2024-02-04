@@ -38,6 +38,9 @@ public class AdminController {
         model.addAttribute("activeAuctionsCount", auctionService.countActiveAuctions());
         model.addAttribute("endedAuctionsCount", auctionService.countEndedAuctions());
         model.addAttribute("bidCount", bidService.countBids());
+        model.addAttribute("sumActive", auctionService.getValueOfActiveAuctions());
+        model.addAttribute("sumSold", auctionService.getValueOfSoldAuctions());
+        model.addAttribute("sumTotal", auctionService.getValueOfAllAuctions());
         return "adminPage";
     }
 
