@@ -1,4 +1,5 @@
-To make it working you have to add application.properties file in the resources directory.
+This app uses PostgreSQL database, but you can use H2 or others.
+To make it work you have to add application.properties file in the resources directory.
 
 Example "application.properties" file:
 
